@@ -1,101 +1,100 @@
 # AI 활용 자유 주제 파이썬 미니 프로젝트
-# 이름 또는 학번: 
-# 프로젝트 주제: 
-
-# ============================================================
-# 사용 안내------3번 줄 아래로 다 지우기
-# ------------------------------------------------------------
-# 이 파일은 예시 골격입니다.
-# 그대로 제출하지 말고, 반드시 자신의 주제에 맞게 수정하세요.
-#
-# 필수 조건
-# 1. 2차원 리스트 사용
-# 2. 함수 2개 이상, 가능하면 3개 이상 분리
-# 3. 조건문 사용
-# 4. 반복문 사용
-# 5. 실행 결과 출력
-# ============================================================
-
-
-# ------------------------------------------------------------
-# 1. 데이터 준비: 2차원 리스트
-# ------------------------------------------------------------
-# 아래 예시는 "활동 추천 프로그램"입니다.
-# 자신의 주제에 맞게 data를 만드세요.
-#
-# 현재 열의 의미:
-# 0번 열: 활동 이름
-# 1번 열: 필요한 시간(분)
-# 2번 열: 추천 기분
-# 3번 열: 활동 유형
-# ------------------------------------------------------------
-
-activities = [
-    ["산책하기", 30, "피곤", "운동"],
-    ["짧은 낮잠", 20, "피곤", "휴식"],
-    ["좋아하는 음악 듣기", 10, "우울", "휴식"],
-    ["문제집 3쪽 풀기", 40, "차분", "공부"],
-    ["방 정리하기", 25, "답답", "생활"],
-    ["친구에게 연락하기", 15, "우울", "소통"],
-]
-
-
-# ------------------------------------------------------------
-# 2. 함수 정의
-# ------------------------------------------------------------
-
-def show_intro():
-    """프로그램 제목과 안내를 출력한다."""
-    print("=" * 40)
-    print("AI 활용 자유 주제 파이썬 미니 프로젝트")
-    print("예시: 기분과 시간에 따른 활동 추천기")
+# 이름 또는 학번: 20815 정덕현
+# 프로젝트 주제: 용액 농도 계산기
+def print_header(title):
+    print("\n" + "=" * 40)
+    print(f"{title:^38}")
     print("=" * 40)
 
 
-def get_user_input():
-    """사용자에게 기분과 남은 시간을 입력받는다."""
-    mood = input("현재 기분을 입력하세요. 예: 피곤, 우울, 차분, 답답: ")
-    minutes = int(input("사용 가능한 시간을 분 단위로 입력하세요: "))
-    return mood, minutes
+def calculate_molarity(info_list):
+    print_header("1. 몰농도 (M) 계산")
+    
+    data = []
+   
+    for item in info_list:
+        user_input = input(item[0])
+        data.append(item[1](user_input))
+
+    solute_name, chemical_formula, formula_weight, solute_mass, water_volume_L = data
+
+  
+    solute_moles = solute_mass / formula_weight
+    molarity = solute_moles / water_volume_L
+
+    print("\n[계산 결과]")
+    print(f"- 용액 정보: {solute_name} ({chemical_formula})")
+    print(f"- 용질의 몰수: {solute_moles:.4f} mol")
+    print(f"- 몰농도: {molarity:.4f} M")
 
 
-def find_recommendations(data, mood, minutes):
-    """2차원 리스트를 반복하며 조건에 맞는 활동을 찾는다."""
-    results = []
 
-    for row in data:
-        name = row[0]
-        required_minutes = row[1]
-        recommended_mood = row[2]
-        activity_type = row[3]
+def calculate_percent(info_list):
+    print_header("2. 퍼센트 농도 (%) 계산")
+    
+    data = []
+   
+    for item in info_list:
+        data.append(item[1](input(item[0])))
 
-        # 조건문: 사용자의 기분과 시간이 활동 조건에 맞는지 판단한다.
-        if recommended_mood == mood and required_minutes <= minutes:
-            results.append([name, required_minutes, activity_type])
+    solute_name, solute_mass, water_volume_L = data
 
-    return results
+  
+    water_mass = water_volume_L * 1000
+    solution_mass = solute_mass + water_mass
+    percent_concentration = (solute_mass / solution_mass) * 100
 
-
-def print_result(results):
-    """추천 결과를 출력한다."""
-    print("\n[추천 결과]")
-
-    if len(results) == 0:
-        print("조건에 맞는 활동이 없습니다.")
-        print("시간을 늘리거나 다른 기분을 입력해 보세요.")
-    else:
-        for item in results:
-            print(f"- {item[0]} / {item[1]}분 / 유형: {item[2]}")
+    print("\n[계산 결과]")
+    print(f"- 용액 정보: {solute_name} 수용액")
+    print(f"- 용액의 총 질량: {solution_mass:.2f} g")
+    print(f"- 퍼센트 농도: {percent_concentration:.2f} %")
 
 
 def main():
-    show_intro()
-    mood, minutes = get_user_input()
-    results = find_recommendations(activities, mood, minutes)
-    print_result(results)
+    menu_list = [
+        ["1", "몰농도(M) 계산하기"],
+        ["2", "퍼센트 농도(%) 계산하기"],
+        ["3", "프로그램 종료"]
+    ]
 
+    molarity_inputs = [
+        ["▶ 용질의 이름 (예: 수산화나트륨): ", str],
+        ["▶ 화학식 (예: NaOH): ", str],
+        ["▶ 용질의 화학식량(g/mol): ", float],
+        ["▶ 사용할 용질의 질량(g): ", float],
+        ["▶ 물(용매)의 부피(L): ", float]
+    ]
 
-# ------------------------------------------------------------
-# 3. 프로그램 실행
-# ------------------------------------------------------------
-main()
+    percent_inputs = [
+        ["▶ 용질의 이름 (예: 염화나트륨): ", str],
+        ["▶ 용질의 질량(g): ", float],
+        ["▶ 물(용매)의 부피(L): ", float]
+    ]
+
+    while True:
+        print_header("용액 농도 계산 도우미 (용매: 물)")
+        
+        for menu in menu_list:
+            print(f" {menu[0]}. {menu[1]}")
+        print("-" * 40)
+        
+        choice = input("원하는 작업의 번호를 선택하세요: ").strip()
+
+        if choice == menu_list[0][0]: # "1"
+            
+            calculate_molarity(molarity_inputs)
+            input("\n계산이 완료되었습니다. 엔터를 누르면 시작 화면으로 돌아갑니다...")
+            
+        elif choice == menu_list[1][0]: # "2"
+            
+            calculate_percent(percent_inputs)
+            input("\n계산이 완료되었습니다. 엔터를 누르면 시작 화면으로 돌아갑니다...")
+            
+        elif choice == menu_list[2][0]: # "3"
+            print("\n프로그램을 종료합니다.")
+            break
+        else:
+            print("\n❌ 잘못된 번호입니다. 다시 선택해 주세요.")
+
+if __name__ == "__main__":
+    main()
